@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  --color-price: #10c44c;
+  --color-heading: #3f4b63;
+  --color-accent: #b88556;
+  --color-text-muted: #7c7c7c;
+  --color-empty-bg: #fff6dd;
+}
+
+body {
+  @apply bg-white text-navy font-body antialiased;
+}
+
+* {
+  @apply border-clay/10;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
