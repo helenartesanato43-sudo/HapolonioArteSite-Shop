@@ -26,9 +26,11 @@ git init
 git add .
 git commit -m "Hapolonio Arte — versão inicial"
 git branch -M main
-git remote add origin https://github.com/SEU-USUARIO/hapolonio-arte.git
+git remote add origin https://github.com/helenartesanato43-sudo/HapolonioArteSite-Shop.git
 git push -u origin main
 ```
+
+git push -u origin main --force
 
 O `.gitignore` já impede que `.env.local` (com suas chaves) suba para o
 GitHub — só o `.env.example` (sem valores reais) vai junto.
