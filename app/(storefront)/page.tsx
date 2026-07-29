@@ -20,10 +20,6 @@ export default async function HomePage() {
 
   const featuredProducts = products.slice(0, 8);
 
-  const firstCategoryHref = categories[0]
-    ? `/categoria/${categories[0].slug}`
-    : "/";
-
   return (
     <main>
       <BannerCarousel banners={banners} intervalSeconds={settings.banner_interval_seconds} />
@@ -33,7 +29,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
         <SectionTitle
           title="Peças Artesanais"
-          href={firstCategoryHref}
+          href="/produtos"
           linkLabel="Ver todos"
         />
         {featuredProducts.length > 0 ? (

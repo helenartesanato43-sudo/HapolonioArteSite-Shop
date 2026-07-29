@@ -31,7 +31,12 @@ export function onlyDigits(value: string): string {
 export function buildWhatsAppLink(phone: string, message: string): string {
   const digits = onlyDigits(phone);
   const withCountryCode = digits.startsWith("55") ? digits : `55${digits}`;
-  return `https://wa.me/${withCountryCode}?text=${encodeURIComponent(message)}`;
+  // api.whatsapp.com/send é o endpoint oficial de "Click to Chat" e preserva
+  // corretamente caracteres Unicode (emojis) na mensagem. O link wa.me passa
+  // por um redirecionamento HTTP que, em alguns navegadores embutidos
+  // (in-app browsers), corrompe emojis na query string, trocando-os por "�".
+  const params = new URLSearchParams({ phone: withCountryCode, text: message });
+  return `https://api.whatsapp.com/send?${params.toString()}`;
 }
 
 export function renderMessageTemplate(
