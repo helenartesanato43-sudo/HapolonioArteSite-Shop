@@ -91,6 +91,13 @@ export async function Footer() {
             © {new Date().getFullYear()} {settings.site_name}. Todos os
             direitos reservados.
           </p>
+
+          <p className="mt-2 text-center text-[11px] text-white/40">
+            Website developed by{" "}
+            <Link href="/desenvolvedor" className="font-bold text-white/50 hover:text-white/70">
+              ReyZ
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

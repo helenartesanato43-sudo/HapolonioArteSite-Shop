@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 import { AddToCartControls } from "@/components/product/AddToCartControls";
-import { ProductGrid } from "@/components/product/ProductGrid";
+import { ProductCarousel } from "@/components/product/ProductCarousel";
 import { getProductBySlug, getSimilarProducts } from "@/lib/data/products";
+import { getSiteSettings } from "@/lib/data/settings";
 import { formatCurrency } from "@/lib/utils";
 
 export const revalidate = 30;
@@ -44,7 +45,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const similarProducts = await getSimilarProducts(product.category_id, product.id, 4);
+  const [similarProducts, settings] = await Promise.all([
+    getSimilarProducts(product.category_id, product.id, 12),
+    getSiteSettings(),
+  ]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
@@ -125,7 +129,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
           >
             Produtos semelhantes
           </h2>
-          <ProductGrid products={similarProducts} />
+          <ProductCarousel
+            products={similarProducts}
+            mobileCount={settings.similar_products_mobile_count}
+            desktopCount={settings.similar_products_desktop_count}
+            intervalSeconds={settings.similar_products_interval_seconds}
+          />
         </div>
       ) : null}
     </main>

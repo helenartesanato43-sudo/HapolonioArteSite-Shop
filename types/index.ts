@@ -41,6 +41,9 @@ export interface SiteSettings {
   product_carousel_mobile_count: number;
   product_carousel_desktop_count: number;
   product_carousel_interval_seconds: number;
+  similar_products_mobile_count: number;
+  similar_products_desktop_count: number;
+  similar_products_interval_seconds: number;
   price_color: string;
   heading_color: string;
   accent_color: string;

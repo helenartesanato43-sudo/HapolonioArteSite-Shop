@@ -127,4 +127,5 @@ export async function deleteProduct(id: string) {
   await supabase.from("products").delete().eq("id", id);
   revalidatePath("/");
   revalidatePath("/admin/produtos");
+  redirect("/admin/produtos");
 }

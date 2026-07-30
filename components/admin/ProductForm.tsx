@@ -7,6 +7,8 @@ import { Category, Product } from "@/types";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Button } from "@/components/ui/button";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { deleteProduct } from "@/lib/actions/products";
 
 type ProductAction = (
   prevState: { error: string } | null,
@@ -30,7 +32,7 @@ function SubmitButton({ label }: { label: string }) {
 
 export function ProductForm({ categories, action, product }: ProductFormProps) {
   const [state, formAction] = useActionState(action, null);
-  const [isUnique, setIsUnique] = useState(product?.is_unique ?? false);
+  const [isUnique, setIsUnique] = useState(product?.is_unique ?? true);
 
   return (
     <form action={formAction} className="space-y-6">
@@ -117,7 +119,7 @@ export function ProductForm({ categories, action, product }: ProductFormProps) {
           <input
             type="checkbox"
             name="is_unique"
-            defaultChecked={product?.is_unique}
+            defaultChecked={product?.is_unique ?? true}
             onChange={(event) => setIsUnique(event.target.checked)}
             className="h-4 w-4 rounded border-clay/40 text-clay focus:ring-clay"
           />
@@ -158,7 +160,16 @@ export function ProductForm({ categories, action, product }: ProductFormProps) {
 
       {state?.error ? <p className="text-sm text-red-600">{state.error}</p> : null}
 
-      <SubmitButton label={product ? "Salvar alterações" : "Cadastrar produto"} />
+      <div className="flex items-center justify-between gap-4 border-t border-clay/10 pt-5">
+        <SubmitButton label={product ? "Salvar alterações" : "Cadastrar produto"} />
+
+        {product ? (
+          <DeleteButton
+            action={deleteProduct.bind(null, product.id)}
+            confirmMessage={`Remover "${product.name}"? Esta ação não pode ser desfeita.`}
+          />
+        ) : null}
+      </div>
     </form>
   );
 }

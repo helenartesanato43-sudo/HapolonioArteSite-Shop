@@ -107,6 +107,32 @@ export function CarouselSettingsForm({ settings }: { settings: SiteSettings }) {
         </div>
       </div>
 
+      <div className="border-t border-clay/10 pt-6">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-navy">
+          Carrossel de produtos semelhantes (página do produto)
+        </h3>
+        <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <NumberField
+            name="similar_products_mobile_count"
+            label="Produtos no celular"
+            icon={Smartphone}
+            defaultValue={settings.similar_products_mobile_count}
+          />
+          <NumberField
+            name="similar_products_desktop_count"
+            label="Produtos no computador"
+            icon={Monitor}
+            defaultValue={settings.similar_products_desktop_count}
+          />
+          <NumberField
+            name="similar_products_interval_seconds"
+            label="Troca automática (segundos)"
+            icon={Timer}
+            defaultValue={settings.similar_products_interval_seconds}
+          />
+        </div>
+      </div>
+
       {state?.error ? <p className="text-sm text-red-600">{state.error}</p> : null}
       {state?.success ? <p className="text-sm text-pix">Configurações salvas!</p> : null}
 

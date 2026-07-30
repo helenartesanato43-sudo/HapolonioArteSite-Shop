@@ -12,11 +12,11 @@ export async function Header() {
       style={{ backgroundColor: settings.accent_color }}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 md:px-8">
-        <div className="w-8 md:w-16" aria-hidden="true" />
+        <div className="w-10 md:w-20" aria-hidden="true" />
 
         <Link
           href="/"
-          className="relative h-8 w-24 md:h-9 md:w-28"
+          className="relative h-12 w-36 md:h-16 md:w-48"
           aria-label={`Página inicial - ${settings.site_name}`}
         >
           <Image
@@ -28,7 +28,7 @@ export async function Header() {
           />
         </Link>
 
-        <div className="flex w-8 justify-end md:w-16">
+        <div className="flex w-10 justify-end md:w-20">
           <CartIcon />
         </div>
       </div>

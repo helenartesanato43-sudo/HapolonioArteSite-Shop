@@ -18,8 +18,6 @@ export default async function HomePage() {
     getBanners(),
   ]);
 
-  const featuredProducts = products.slice(0, 12);
-
   return (
     <main>
       <BannerCarousel banners={banners} intervalSeconds={settings.banner_interval_seconds} />
@@ -37,9 +35,9 @@ export default async function HomePage() {
           href="/produtos"
           linkLabel="Ver todos"
         />
-        {featuredProducts.length > 0 ? (
+        {products.length > 0 ? (
           <ProductCarousel
-            products={featuredProducts}
+            products={products}
             mobileCount={settings.product_carousel_mobile_count}
             desktopCount={settings.product_carousel_desktop_count}
             intervalSeconds={settings.product_carousel_interval_seconds}

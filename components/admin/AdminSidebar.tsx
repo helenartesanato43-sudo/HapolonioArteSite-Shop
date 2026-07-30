@@ -12,6 +12,7 @@ import {
   Settings,
   Palette,
   MessageCircle,
+  GalleryHorizontal,
   LogOut,
   Menu,
   X,
@@ -24,6 +25,7 @@ const links = [
   { href: "/admin/produtos", label: "Produtos", icon: Package },
   { href: "/admin/categorias", label: "Categorias", icon: FolderTree },
   { href: "/admin/banners", label: "Banners", icon: ImageIcon },
+  { href: "/admin/carrosseis", label: "Carrosséis", icon: GalleryHorizontal },
   { href: "/admin/mensagem-whatsapp", label: "Mensagem WhatsApp", icon: MessageCircle },
   { href: "/admin/configuracoes", label: "Configurações", icon: Settings },
   { href: "/admin/aparencia", label: "Aparência", icon: Palette },
@@ -52,9 +54,9 @@ export function AdminSidebar({ logoUrl }: { logoUrl: string | null }) {
       <div className="sticky top-0 z-40 w-full bg-navy text-white shadow-md md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2.5">
-            <div className="relative h-8 w-20 shrink-0">
+            <Link href="/" className="relative h-8 w-20 shrink-0" title="Ir para o site">
               <Image src={logoUrl || "/logo.png"} alt="Logo" fill className="object-contain" />
-            </div>
+            </Link>
             <div className="border-l border-white/15 pl-2.5">
               <p className="text-[10px] uppercase tracking-widest text-white/50">
                 Painel Administrativo
@@ -123,9 +125,13 @@ export function AdminSidebar({ logoUrl }: { logoUrl: string | null }) {
       {/* ---- Desktop: barra lateral fixa ---- */}
       <aside className="hidden h-screen w-64 shrink-0 flex-col bg-navy text-white md:sticky md:top-0 md:flex">
         <div className="flex flex-col items-center gap-3 border-b border-white/10 px-6 py-8 text-center">
-          <div className="relative h-12 w-32">
+          <Link
+            href="/"
+            className="relative h-12 w-32 transition-opacity hover:opacity-80"
+            title="Ir para o site"
+          >
             <Image src={logoUrl || "/logo.png"} alt="Logo" fill className="object-contain" />
-          </div>
+          </Link>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">
             Painel Administrativo
           </p>

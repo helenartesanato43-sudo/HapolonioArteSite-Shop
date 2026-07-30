@@ -54,6 +54,9 @@ export async function updateCarouselSettings(
     "product_carousel_mobile_count",
     "product_carousel_desktop_count",
     "product_carousel_interval_seconds",
+    "similar_products_mobile_count",
+    "similar_products_desktop_count",
+    "similar_products_interval_seconds",
   ] as const;
 
   const values: Record<string, number> = {};
