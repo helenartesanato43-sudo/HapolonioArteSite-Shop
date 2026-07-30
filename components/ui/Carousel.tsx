@@ -74,6 +74,10 @@ function CarouselTrack<T>({
   const [canNext, setCanNext] = useState(false);
   const safeItemsPerView = Math.max(1, itemsPerView);
   const showNav = items.length > safeItemsPerView;
+  // Quando cabem todos os itens sem precisar rolar, dimensiona pelas
+  // unidades reais (não pela capacidade configurada) para que a fileira
+  // fique centralizada em vez de "grudada" à esquerda com espaço vazio.
+  const widthBasis = showNav ? safeItemsPerView : Math.min(safeItemsPerView, items.length);
 
   const updateArrows = useCallback(() => {
     const el = trackRef.current;
@@ -144,7 +148,9 @@ function CarouselTrack<T>({
         ref={trackRef}
         onPointerDown={pauseThenResume}
         onTouchStart={pauseThenResume}
-        className="flex touch-pan-x snap-x snap-mandatory overflow-x-auto scroll-smooth py-1 [-webkit-overflow-scrolling:touch] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className={`flex touch-pan-x snap-x snap-mandatory overflow-x-auto scroll-smooth py-1 [-webkit-overflow-scrolling:touch] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
+          showNav ? "" : "justify-center"
+        }`}
         style={{ gap: `${gapPx}px` }}
       >
         {items.map((item, i) => (
@@ -152,7 +158,7 @@ function CarouselTrack<T>({
             key={itemKey(item, i)}
             className="shrink-0 snap-start"
             style={{
-              width: `calc((100% - ${gapPx * (safeItemsPerView - 1)}px) / ${safeItemsPerView})`,
+              width: `calc((100% - ${gapPx * (widthBasis - 1)}px) / ${widthBasis})`,
             }}
           >
             {renderItem(item, i)}

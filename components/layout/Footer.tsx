@@ -9,7 +9,7 @@ export async function Footer() {
 
   return (
     <footer style={{ backgroundColor: settings.accent_color }} className="text-white">
-      <div className="mx-auto max-w-7xl px-4 py-14 md:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 py-14 md:px-8">
         <div className="border-t border-white/20 pt-12">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
             <div>
@@ -77,16 +77,6 @@ export async function Footer() {
             </div>
           </div>
 
-          <div className="mt-10 flex justify-center">
-            <Link
-              href="/admin/login"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 py-2 text-xs font-medium text-white/70 transition-colors hover:border-white hover:text-white"
-            >
-              <Lock className="h-3.5 w-3.5" aria-hidden="true" />
-              Painel administrativo
-            </Link>
-          </div>
-
           <p className="mt-14 text-center text-xs text-white/60">
             © {new Date().getFullYear()} {settings.site_name}. Todos os
             direitos reservados.
@@ -99,6 +89,15 @@ export async function Footer() {
             </Link>
           </p>
         </div>
+
+        <Link
+          href="/admin/login"
+          aria-label="Painel administrativo"
+          title="Painel administrativo"
+          className="absolute bottom-4 right-4 flex h-8 w-8 items-center justify-center rounded-full text-white/30 transition-colors hover:text-white/70 md:bottom-6 md:right-8"
+        >
+          <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+        </Link>
       </div>
     </footer>
   );

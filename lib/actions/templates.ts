@@ -66,3 +66,20 @@ export async function deleteTemplate(id: string) {
   await supabase.from("message_templates").delete().eq("id", id);
   revalidatePath("/admin/configuracoes");
 }
+
+export async function duplicateTemplate(id: string) {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("message_templates")
+    .select("name, content")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (!data) return;
+
+  await supabase
+    .from("message_templates")
+    .insert({ name: `${data.name} (cópia)`, content: data.content });
+
+  revalidatePath("/admin/mensagem-whatsapp");
+}
