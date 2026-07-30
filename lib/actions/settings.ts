@@ -43,6 +43,40 @@ export async function updateGeneralSettings(
   return { error: null, success: true };
 }
 
+export async function updateCarouselSettings(
+  _prevState: ActionState | null,
+  formData: FormData
+): Promise<ActionState> {
+  const fields = [
+    "category_carousel_mobile_count",
+    "category_carousel_desktop_count",
+    "category_carousel_interval_seconds",
+    "product_carousel_mobile_count",
+    "product_carousel_desktop_count",
+    "product_carousel_interval_seconds",
+  ] as const;
+
+  const values: Record<string, number> = {};
+
+  for (const field of fields) {
+    const raw = Number(formData.get(field));
+    if (!Number.isFinite(raw) || raw < 1) {
+      return { error: "Todos os valores devem ser números maiores que zero." };
+    }
+    values[field] = Math.round(raw);
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("site_settings").update(values).eq("id", 1);
+
+  if (error) {
+    return { error: `Não foi possível salvar: ${error.message}` };
+  }
+
+  revalidatePath("/", "layout");
+  return { error: null, success: true };
+}
+
 export async function updateThemeSettings(
   _prevState: ActionState | null,
   formData: FormData

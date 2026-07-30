@@ -1,13 +1,18 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Package, ChevronLeft, ChevronRight } from "lucide-react";
 import { Category } from "@/types";
 
-const CAROUSEL_THRESHOLD = 4;
+interface CategoryShowcaseProps {
+  categories: Category[];
+  mobileCount: number;
+  desktopCount: number;
+  intervalSeconds: number;
+}
 
 function CategoryItem({ category, index }: { category: Category; index: number }) {
   return (
@@ -50,63 +55,136 @@ function CategoryItem({ category, index }: { category: Category; index: number }
   );
 }
 
-function CategoryCarousel({ categories }: { categories: Category[] }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+function chunk<T>(items: T[], size: number): T[][] {
+  if (size <= 0) return [items];
+  const pages: T[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    pages.push(items.slice(i, i + size));
+  }
+  return pages;
+}
 
-  function scrollByAmount(direction: 1 | -1) {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollBy({ left: direction * el.clientWidth * 0.8, behavior: "smooth" });
+function CarouselTrack({
+  categories,
+  itemsPerView,
+  intervalSeconds,
+}: {
+  categories: Category[];
+  itemsPerView: number;
+  intervalSeconds: number;
+}) {
+  const pages = chunk(categories, Math.max(1, itemsPerView));
+  const totalPages = pages.length;
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    setIndex(0);
+  }, [totalPages]);
+
+  useEffect(() => {
+    if (totalPages <= 1) return;
+    const ms = Math.max(2, intervalSeconds) * 1000;
+    const timer = setInterval(() => {
+      setIndex((current) => (current + 1) % totalPages);
+    }, ms);
+    return () => clearInterval(timer);
+  }, [totalPages, intervalSeconds]);
+
+  if (totalPages <= 1) {
+    return (
+      <div className="flex flex-wrap justify-center gap-8 sm:gap-10 md:gap-14">
+        {categories.map((category, i) => (
+          <CategoryItem key={category.id} category={category} index={i} />
+        ))}
+      </div>
+    );
+  }
+
+  function goTo(direction: 1 | -1) {
+    setIndex((current) => (current + direction + totalPages) % totalPages);
   }
 
   return (
     <div className="relative">
       <button
         type="button"
-        onClick={() => scrollByAmount(-1)}
+        onClick={() => goTo(-1)}
         aria-label="Categorias anteriores"
-        className="absolute left-0 top-16 z-10 hidden -translate-x-1/2 items-center justify-center rounded-full bg-white p-2 text-navy shadow-card ring-1 ring-clay/15 transition-transform hover:scale-105 sm:top-20 sm:flex md:top-24"
+        className="absolute left-0 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white p-2 text-navy shadow-card ring-1 ring-clay/15 transition-transform hover:scale-105 sm:flex"
       >
         <ChevronLeft className="h-5 w-5" aria-hidden="true" />
       </button>
 
-      <div
-        ref={scrollRef}
-        className="flex snap-x snap-mandatory gap-8 overflow-x-auto scroll-smooth px-1 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-10 md:gap-14 [&::-webkit-scrollbar]:hidden"
-      >
-        {categories.map((category, index) => (
-          <div key={category.id} className="shrink-0 snap-start">
-            <CategoryItem category={category} index={index} />
-          </div>
-        ))}
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{
+            width: `${totalPages * 100}%`,
+            transform: `translateX(-${(index * 100) / totalPages}%)`,
+          }}
+        >
+          {pages.map((page, pageIndex) => (
+            <div
+              key={pageIndex}
+              className="flex shrink-0 justify-center gap-8 px-1 sm:gap-10 md:gap-14"
+              style={{ width: `${100 / totalPages}%` }}
+            >
+              {page.map((category, i) => (
+                <CategoryItem key={category.id} category={category} index={i} />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       <button
         type="button"
-        onClick={() => scrollByAmount(1)}
+        onClick={() => goTo(1)}
         aria-label="Próximas categorias"
-        className="absolute right-0 top-16 z-10 hidden translate-x-1/2 items-center justify-center rounded-full bg-white p-2 text-navy shadow-card ring-1 ring-clay/15 transition-transform hover:scale-105 sm:top-20 sm:flex md:top-24"
+        className="absolute right-0 top-1/2 z-10 hidden translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white p-2 text-navy shadow-card ring-1 ring-clay/15 transition-transform hover:scale-105 sm:flex"
       >
         <ChevronRight className="h-5 w-5" aria-hidden="true" />
       </button>
+
+      <div className="mt-4 flex justify-center gap-1.5">
+        {pages.map((_, pageIndex) => (
+          <span
+            key={pageIndex}
+            className={`h-1.5 rounded-full transition-all ${
+              pageIndex === index ? "w-5 bg-clay" : "w-1.5 bg-clay/25"
+            }`}
+            aria-hidden="true"
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
-export function CategoryShowcase({ categories }: { categories: Category[] }) {
+export function CategoryShowcase({
+  categories,
+  mobileCount,
+  desktopCount,
+  intervalSeconds,
+}: CategoryShowcaseProps) {
   if (categories.length === 0) return null;
 
   return (
     <section className="mx-auto max-w-7xl px-4 pt-16 md:px-8 md:pt-20">
-      {categories.length > CAROUSEL_THRESHOLD ? (
-        <CategoryCarousel categories={categories} />
-      ) : (
-        <div className="flex flex-wrap justify-center gap-8 sm:gap-10 md:gap-14">
-          {categories.map((category, index) => (
-            <CategoryItem key={category.id} category={category} index={index} />
-          ))}
-        </div>
-      )}
+      <div className="block md:hidden">
+        <CarouselTrack
+          categories={categories}
+          itemsPerView={mobileCount}
+          intervalSeconds={intervalSeconds}
+        />
+      </div>
+      <div className="hidden md:block">
+        <CarouselTrack
+          categories={categories}
+          itemsPerView={desktopCount}
+          intervalSeconds={intervalSeconds}
+        />
+      </div>
     </section>
   );
 }

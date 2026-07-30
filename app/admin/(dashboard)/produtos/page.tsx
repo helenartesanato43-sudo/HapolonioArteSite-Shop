@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { getAllProductsForAdmin } from "@/lib/data/products";
 import { formatCurrency } from "@/lib/utils";
 import { DeleteButton } from "@/components/admin/DeleteButton";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { deleteProduct } from "@/lib/actions/products";
 
 export default async function AdminProductsPage() {
@@ -11,23 +12,11 @@ export default async function AdminProductsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold uppercase tracking-wide text-navy">
-            Produtos
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            {products.length} produto(s) cadastrado(s).
-          </p>
-        </div>
-        <Link
-          href="/admin/produtos/novo"
-          className="inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-white hover:bg-clay-dark"
-        >
-          <Plus className="h-4 w-4" aria-hidden="true" />
-          Novo produto
-        </Link>
-      </div>
+      <AdminPageHeader
+        title="Produtos"
+        description={`${products.length} produto(s) cadastrado(s).`}
+        action={{ href: "/admin/produtos/novo", label: "Novo produto", icon: Plus }}
+      />
 
       <div className="mt-8 overflow-hidden rounded-2xl bg-white shadow-card">
         <div className="overflow-x-auto">

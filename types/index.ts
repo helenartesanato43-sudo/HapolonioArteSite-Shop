@@ -35,6 +35,12 @@ export interface SiteSettings {
   whatsapp_checkout: string;
   instagram_url: string;
   banner_interval_seconds: number;
+  category_carousel_mobile_count: number;
+  category_carousel_desktop_count: number;
+  category_carousel_interval_seconds: number;
+  product_carousel_mobile_count: number;
+  product_carousel_desktop_count: number;
+  product_carousel_interval_seconds: number;
   price_color: string;
   heading_color: string;
   accent_color: string;

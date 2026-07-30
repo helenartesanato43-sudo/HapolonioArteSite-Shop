@@ -1,7 +1,7 @@
 import { BannerCarousel } from "@/components/home/BannerCarousel";
 import { CategoryShowcase } from "@/components/home/CategoryShowcase";
 import { SectionTitle } from "@/components/home/SectionTitle";
-import { ProductGrid } from "@/components/product/ProductGrid";
+import { ProductCarousel } from "@/components/product/ProductCarousel";
 import { EmptyState } from "@/components/category/EmptyState";
 import { getAllProducts } from "@/lib/data/products";
 import { getCategories } from "@/lib/data/categories";
@@ -18,13 +18,18 @@ export default async function HomePage() {
     getBanners(),
   ]);
 
-  const featuredProducts = products.slice(0, 8);
+  const featuredProducts = products.slice(0, 12);
 
   return (
     <main>
       <BannerCarousel banners={banners} intervalSeconds={settings.banner_interval_seconds} />
 
-      <CategoryShowcase categories={categories} />
+      <CategoryShowcase
+        categories={categories}
+        mobileCount={settings.category_carousel_mobile_count}
+        desktopCount={settings.category_carousel_desktop_count}
+        intervalSeconds={settings.category_carousel_interval_seconds}
+      />
 
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
         <SectionTitle
@@ -33,7 +38,12 @@ export default async function HomePage() {
           linkLabel="Ver todos"
         />
         {featuredProducts.length > 0 ? (
-          <ProductGrid products={featuredProducts} />
+          <ProductCarousel
+            products={featuredProducts}
+            mobileCount={settings.product_carousel_mobile_count}
+            desktopCount={settings.product_carousel_desktop_count}
+            intervalSeconds={settings.product_carousel_interval_seconds}
+          />
         ) : (
           <EmptyState />
         )}

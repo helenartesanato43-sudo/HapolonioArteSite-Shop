@@ -4,6 +4,7 @@ import { Plus, Monitor, Smartphone } from "lucide-react";
 import { getAllBannersForAdmin } from "@/lib/data/banners";
 import { getSiteSettings } from "@/lib/data/settings";
 import { DeleteButton } from "@/components/admin/DeleteButton";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { CarouselIntervalForm } from "@/components/admin/CarouselIntervalForm";
 import { deleteBanner } from "@/lib/actions/banners";
 
@@ -15,24 +16,11 @@ export default async function AdminBannersPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold uppercase tracking-wide text-navy">
-            Banners
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            {banners.length} banner(s) cadastrado(s). Eles giram em um
-            carrossel com transição suave na home.
-          </p>
-        </div>
-        <Link
-          href="/admin/banners/novo"
-          className="inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-white hover:bg-clay-dark"
-        >
-          <Plus className="h-4 w-4" aria-hidden="true" />
-          Novo banner
-        </Link>
-      </div>
+      <AdminPageHeader
+        title="Banners"
+        description={`${banners.length} banner(s) cadastrado(s). Eles giram em um carrossel com transição suave na home.`}
+        action={{ href: "/admin/banners/novo", label: "Novo banner", icon: Plus }}
+      />
 
       <div className="mt-6 rounded-2xl bg-white p-6 shadow-card">
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-navy">

@@ -4,6 +4,7 @@ import { Plus as PlusIcon } from "lucide-react";
 import { getCategories } from "@/lib/data/categories";
 import { getAllProductsForAdmin } from "@/lib/data/products";
 import { DeleteButton } from "@/components/admin/DeleteButton";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { deleteCategory } from "@/lib/actions/categories";
 
 export default async function AdminCategoriesPage() {
@@ -14,23 +15,11 @@ export default async function AdminCategoriesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold uppercase tracking-wide text-navy">
-            Categorias
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            {categories.length} categoria(s) cadastrada(s).
-          </p>
-        </div>
-        <Link
-          href="/admin/categorias/novo"
-          className="inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-white hover:bg-clay-dark"
-        >
-          <PlusIcon className="h-4 w-4" aria-hidden="true" />
-          Nova categoria
-        </Link>
-      </div>
+      <AdminPageHeader
+        title="Categorias"
+        description={`${categories.length} categoria(s) cadastrada(s).`}
+        action={{ href: "/admin/categorias/novo", label: "Nova categoria", icon: PlusIcon }}
+      />
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {categories.map((category) => {

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { BannerForm } from "@/components/admin/BannerForm";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { getBannerById } from "@/lib/data/banners";
 import { updateBanner } from "@/lib/actions/banners";
 
@@ -19,10 +20,7 @@ export default async function EditBannerPage({ params }: EditBannerPageProps) {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-bold uppercase tracking-wide text-navy">
-        Editar banner
-      </h1>
-      <p className="mt-1 text-sm text-muted">{banner.name}</p>
+      <AdminPageHeader title="Editar banner" description={banner.name} />
 
       <div className="mt-8 rounded-2xl bg-white p-6 shadow-card">
         <BannerForm action={action} banner={banner} />

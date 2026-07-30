@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { CategoryForm } from "@/components/admin/CategoryForm";
+import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
 import { getCategoryById } from "@/lib/data/categories";
 import { getAllProductsForAdmin } from "@/lib/data/products";
 import { updateCategory } from "@/lib/actions/categories";
@@ -26,10 +27,7 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-bold uppercase tracking-wide text-navy">
-        Editar categoria
-      </h1>
-      <p className="mt-1 text-sm text-muted">{category.name}</p>
+      <AdminPageHeader title="Editar categoria" description={category.name} />
 
       <div className="mt-8 rounded-2xl bg-white p-6 shadow-card">
         <CategoryForm action={action} category={category} />
